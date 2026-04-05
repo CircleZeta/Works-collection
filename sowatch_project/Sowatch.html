@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoWatch 智慧手表</title>
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",Arial,sans-serif;}
+    html, body {width:100%;height:100%;overflow:hidden;color:white;background:black;}
+    .section {
+      position:absolute;width:100%;height:100%;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      text-align:center;transition: transform 1s;
+      padding: 60px 20px;
+    }
+    /* 视频封面 */
+    #section1 {z-index:1;background:black;}
+    #bg-video {
+      position:absolute;top:0;left:0;width:100%;height:100%;
+      object-fit:cover;z-index:0;
+    }
+    #section1 .overlay {
+      position:relative;z-index:2;
+      background:rgba(0,0,0,0.35);padding:40px 60px;border-radius:25px;
+    }
+    #section1 h1 {font-size:3.2em;margin-bottom:0.5em;}
+    #section1 p {font-size:1.3em;}
+
+    /* 渐变背景 */
+    #section2 {z-index:2;background:linear-gradient(135deg,#3a7bd5,#00d2ff);}
+    #section3 {z-index:3;background:linear-gradient(135deg,#00c6ff,#0072ff);}
+    #section4 {z-index:4;background:linear-gradient(135deg,#0093E9,#80D0C7);}
+    #section5 {z-index:5;background:linear-gradient(135deg,#4158D0,#C850C0);}
+    #section6 {z-index:6;background:linear-gradient(135deg,#43cea2,#185a9d);}
+
+    h2 {font-size:2.8em;margin-bottom:0.5em;}
+    p {font-size:1.2em;max-width:650px;line-height:1.6;margin-bottom:1em;}
+
+    /* 按钮动画 */
+    .btn {
+      position: relative;
+      overflow: hidden;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid white;
+      color: white;
+      padding: 12px 28px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 15px;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.6s ease;
+    }
+    .btn:hover::before { left:100%; }
+    .btn:hover { background:white;color:#0072ff; transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,0.2); }
+
+    /* 团队页 */
+    .team {display:flex;flex-wrap:wrap;justify-content:center;gap:30px;margin-top:40px;}
+    .member {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px 30px;
+      border-radius: 20px;
+      font-size: 1.1em;
+      backdrop-filter: blur(5px);
+      transition: transform 0.3s, background 0.3s;
+    }
+    .member:hover { transform: translateY(-8px); background: rgba(255, 255, 255, 0.3); }
+
+    /* 导航点 */
+    .nav-dots {position: fixed; right: 20px; top:50%; transform:translateY(-50%); display:flex;flex-direction:column;gap:10px; z-index:999;}
+    .dot {width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);cursor:pointer;transition:background 0.3s;}
+    .dot.active {background:white;}
+
+    /* 中英切换按钮 */
+    #lang-btn {
+      position: fixed; right: 60px; top: 25px; z-index:1000;
+      background: rgba(255,255,255,0.15); border:1px solid white; color:white;
+      padding:8px 20px; border-radius:20px; cursor:pointer; font-size:0.9em;
+      transition:0.3s;
+    }
+    #lang-btn:hover { background:white; color:#0072ff; }
+
+    /* 手表旋转动画 
+    
+    .watch-container {width:250px;height:250px;margin-bottom:20px;perspective:1000px;}
+    .watch-image {width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,rgba(255,255,255,0) 70%);border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:5rem;animation:rotate 20s linear infinite;box-shadow:0 0 30px rgba(255,255,255,0.1);}
+    @keyframes rotate {from{transform:rotateY(0deg);}to{transform:rotateY(360deg);}}
+    */
+    /* 应用卡片悬浮 */
+    .app-showcase {display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap;}
+    .app-card {background: rgba(255,255,255,0.1);border-radius:20px;padding:30px;width:180px;text-align:center;transition:all 0.3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.05);}
+    .app-card:hover {transform:translateY(-10px);background:rgba(255,255,255,0.15);box-shadow:0 15px 30px rgba(0,0,0,0.2);}
+    .app-icon {font-size:3rem;margin-bottom:10px;}
+
+    /* 用户评价卡片 */
+    .testimonials {display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:40px;max-width:900px;}
+    .testimonial-card {background:rgba(255,255,255,0.1);padding:20px;border-radius:15px;max-width:300px;text-align:left;position:relative;transition:transform 0.3s,background 0.3s;}
+    .testimonial-card:hover {transform:translateY(-8px);background:rgba(255,255,255,0.15);}
+    .testimonial-quote {font-size:3rem;opacity:0.2;position:absolute;top:5px;left:5px;}
+    .testimonial-text {font-style:italic;line-height:1.6;margin-bottom:10px;padding-top:20px;}
+    .testimonial-author {font-weight:600;}
+    .testimonial-role {font-size:0.9rem;opacity:0.8;margin-top:5px;}
+  </style>
+</head>
+<body>
+  <!-- 语言切换 -->
+  <button id="lang-btn">EN</button>
+
+  <!-- 第一页：视频封面 -->
+  <section class="section" id="section1">
+    <video autoplay muted loop id="bg-video">
+      <source src="assets/sowatch.mp4" type="video/mp4"/>
+    </video>
+    <div class="overlay">
+      <h1 data-zh="SoWatch 智慧手表" data-en="SoWatch Smartwatch">SoWatch 智慧手表</h1>
+      <p data-zh="开启你的健康新纪元" data-en="Begin your new era of health">开启你的健康新纪元</p>
+      <div class="watch-container">
+        <div class="watch-image">⌚</div>
+      </div>
+      <button class="btn" data-zh="立即购买" data-en="Buy Now">立即购买</button>
+    </div>
+  </section>
+
+  <!-- 第二页：健康监测 + 无屏设计 -->
+  <section class="section" id="section2">
+    <h2 data-zh="智能健康检测" data-en="Smart Health Monitoring">智能健康检测</h2>
+    <p data-zh="实时监测心率、血氧与睡眠数据，可视化直观。" data-en="Monitor heart rate, oxygen, sleep with visual clarity.">实时监测心率、血氧与睡眠数据，可视化直观。</p>
+
+    <div class="feature-icon">👁️</div>
+    <h2 data-zh="无屏设计" data-en="Screenless Design">无屏设计</h2>
+    <p data-zh="告别复杂屏幕，采用语音和触觉交互。" data-en="Voice & haptic interface removes screen complexity.">告别复杂屏幕，采用语音和触觉交互。</p>
+
+    <div class="specs-container">
+      <div class="spec-item">
+        <div class="spec-value" data-zh="零学习成本" data-en="Zero Learning Curve">零学习成本</div>
+        <div class="spec-label" data-zh="无需阅读屏幕" data-en="No Screen Needed">无需阅读屏幕</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-value" data-zh="全天舒适" data-en="All-Day Comfort">全天舒适</div>
+        <div class="spec-label" data-zh="轻量设计" data-en="Lightweight Design">轻量设计</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-value" data-zh="超长续航" data-en="Extended Battery">超长续航</div>
+        <div class="spec-label" data-zh="14天待机" data-en="14 Days Standby">14天待机</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第三页：运动追踪 + AI助手 -->
+  <section class="section" id="section3">
+    <h2 data-zh="运动追踪" data-en="Activity Tracking">运动追踪</h2>
+    <p data-zh="记录步数、卡路里及训练强度。" data-en="Track steps, calories, training intensity.">记录步数、卡路里及训练强度。</p>
+
+    <div class="feature-icon">🎤</div>
+    <h2 data-zh="AI语音助手" data-en="AI Voice Assistant">AI语音助手</h2>
+    <p data-zh="支持自然语音交流和方言识别。" data-en="Supports natural voice interaction and dialect recognition.">支持自然语音交流和方言识别。</p>
+
+    <div class="app-showcase">
+      <div class="app-card">
+        <div class="app-icon">💊</div>
+        <div data-zh="用药提醒" data-en="Medication Reminders">用药提醒</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon">📞</div>
+        <div data-zh="语音拨号" data-en="Hands-Free Calling">语音拨号</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon">🌤️</div>
+        <div data-zh="天气查询" data-en="Weather Updates">天气查询</div>
+      </div>
+    </div>
+
+    <div class="testimonials">
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <div class="testimonial-text" data-zh="我的母亲视力不好，但Sowatch语音助手让她轻松使用功能。" data-en="My mother has poor eyesight, but Sowatch voice assistant helps her use features easily.">我的母亲视力不好，但Sowatch语音助手让她轻松使用功能。</div>
+        <div class="testimonial-author" data-zh="李女士" data-en="Ms. Li">李女士</div>
+        <div class="testimonial-role" data-zh="用户家属" data-en="Loving Daughter">用户家属</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第四页：配套APP -->
+  <section class="section" id="section4">
+    <h2 data-zh="家庭陪伴APP" data-en="Family Companion App">家庭陪伴APP</h2>
+    <p data-zh="实时监控父母健康数据，远程设置提醒及安全区域。" data-en="Monitor parents' health data, set reminders & safety zones remotely.">实时监控父母健康数据，远程设置提醒及安全区域。</p>
+
+    <div class="app-showcase">
+      <div class="app-card">
+        <div class="app-icon">❤️</div>
+        <div data-zh="健康监测" data-en="Health Tracking">健康监测</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon">📍</div>
+        <div data-zh="位置追踪" data-en="Location Services">位置追踪</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon">🔔</div>
+        <div data-zh="紧急提醒" data-en="Emergency Assistance">紧急提醒</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第五页：NFC支付 -->
+  <section class="section" id="section5">
+    <h2 data-zh="便捷NFC支付" data-en="NFC Payments">便捷NFC支付</h2>
+    <p data-zh="内置安全芯片，支持多平台支付，轻轻一碰完成支付。" data-en="Secure chip supports multiple payment platforms, tap to pay.">内置安全芯片，支持多平台支付，轻轻一碰完成支付。</p>
+  </section>
+
+  <!-- 第六页：团队 -->
+  <section class="section" id="section6">
+    <h2 data-zh="我们的团队" data-en="Our Team">我们的团队</h2>
+    <div class="team">
+      <div class="member" data-zh="包正江" data-en="BaoZhengjiang">BaoZhengjiang</div>
+      <div class="member" data-zh="黄骞" data-en="HuangQian">HuangQian</div>
+      <div class="member" data-zh="姜蕴哲" data-en="JiangYunzhe">JiangYunzhe</div>
+      <div class="member" data-zh="吴鹏程" data-en="WuPengcheng">WuPengcheng</div>
+      <div class="member" data-zh="肖健" data-en="XiaoJian">XiaoJian</div>
+      <div class="member" data-zh="张卢" data-en="ZhangLu">ZhangLu</div>
+    </div>
+  </section>
+
+  <!-- 导航点 -->
+  <div class="nav-dots">
+    <div class="dot active" data-index="0"></div>
+    <div class="dot" data-index="1"></div>
+    <div class="dot" data-index="2"></div>
+    <div class="dot" data-index="3"></div>
+    <div class="dot" data-index="4"></div>
+    <div class="dot" data-index="5"></div>
+  </div>
+
+  <script>
+    // 滚动逻辑
+    const sections = document.querySelectorAll('.section');
+    const dots = document.querySelectorAll('.dot');
+    let currentIndex = 0;
+    const total = sections.length;
+
+    function goTo(index){
+      if(index<0||index>=total)return;
+      currentIndex=index;
+      sections.forEach((s,i)=>{s.style.transform=`translateY(${(i-currentIndex)*100}%)`;});
+      dots.forEach((d,i)=>d.classList.toggle('active',i===currentIndex));
+    }
+
+    // 鼠标滚轮
+    let scrolling=false;
+    window.addEventListener('wheel',e=>{
+      if(scrolling)return;
+      scrolling=true;
+      if(e.deltaY>0) goTo(currentIndex+1);
+      else goTo(currentIndex-1);
+      setTimeout(()=>scrolling=false,1000);
+    });
+
+    // 点击导航点
+    dots.forEach(dot=>{
+      dot.addEventListener('click',()=>goTo(parseInt(dot.dataset.index)));
+    });
+
+    // 触摸滑动
+    let startY=0;
+    document.addEventListener('touchstart',e=>startY=e.touches[0].clientY);
+    document.addEventListener('touchend',e=>{
+      let diff=startY-e.changedTouches[0].clientY;
+      if(Math.abs(diff)>50){if(diff>0) goTo(currentIndex+1);else goTo(currentIndex-1);}
+    });
+
+    // 初始化
+    goTo(0);
+
+    // 中英文切换
+    const langBtn=document.getElementById('lang-btn');
+    let lang='zh';
+    langBtn.addEventListener('click',()=>{
+      lang=lang==='zh'?'en':'zh';
+      document.querySelectorAll('[data-zh]').forEach(el=>el.textContent=el.dataset[lang]);
+      langBtn.textContent=lang==='zh'?'EN':'中文';
+    });
+  </script>
+</body>
+</html>

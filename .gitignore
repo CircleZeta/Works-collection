@@ -1,0 +1,25 @@
+# Android / Gradle
+**/build/
+.gradle/
+local.properties
+**/generated/
+**/intermediates/
+**/outputs/
+**/captures/
+*.apk
+*.aab
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+
+# Java/Kotlin
+*.class

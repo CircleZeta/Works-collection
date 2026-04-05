@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 应用名称 -->
+    <string name="app_name">RenAlytics渗溪</string>
+    
+    <!-- 通用按钮 -->
+    <string name="button_scan">扫描设备</string>
+    <string name="button_connect">连接</string>
+    <string name="button_bind">绑定</string>
+    <string name="button_set_default">设为默认</string>
+    <string name="button_add">添加</string>
+    <string name="button_save">保存</string>
+    <string name="button_cancel">取消</string>
+    <string name="button_ok">确定</string>
+    <string name="button_back">返回</string>
+    
+    <!-- 页面标题 -->
+    <string name="title_dashboard">肾功能监测</string>
+    <string name="title_device_management">设备管理</string>
+    <string name="title_user_management">用户管理</string>
+    <string name="title_settings">设置</string>
+    <string name="title_add_user">添加用户</string>
+    <string name="title_edit_user">编辑用户</string>
+    <string name="title_detail">详情</string>
+    
+    <!-- 标签 -->
+    <string name="label_egfr">eGFR</string>
+    <string name="label_creatinine">血肌酐</string>
+    <string name="label_bun">尿素氮</string>
+    <string name="label_cystatin_c">胱抑素C</string>
+    <string name="label_uric_acid">尿酸</string>
+    <string name="label_proteinuria">尿蛋白</string>
+    <string name="label_albuminuria">尿白蛋白</string>
+    <string name="label_urine_volume">尿量</string>
+    <string name="label_ckd_stage">CKD分期</string>
+    <string name="label_name">姓名</string>
+    <string name="label_age">年龄</string>
+    <string name="label_gender">性别</string>
+    <string name="label_height">身高</string>
+    <string name="label_weight">体重</string>
+    <string name="label_medical_history">病史</string>
+    <string name="label_device_name">设备名称</string>
+    <string name="label_device_address">设备地址</string>
+    <string name="label_last_connected">最后连接</string>
+    
+    <!-- 单位 -->
+    <string name="unit_egfr">mL/min/1.73m²</string>
+    <string name="unit_creatinine">μmol/L</string>
+    <string name="unit_bun">mmol/L</string>
+    <string name="unit_cystatin_c">mg/L</string>
+    <string name="unit_uric_acid">μmol/L</string>
+    <string name="unit_proteinuria">g/L</string>
+    <string name="unit_albuminuria">mg/L</string>
+    <string name="unit_urine_volume">mL</string>
+    <string name="unit_cm">cm</string>
+    <string name="unit_kg">kg</string>
+    
+    <!-- 状态 -->
+    <string name="status_normal">正常</string>
+    <string name="status_mild">轻度异常</string>
+    <string name="status_moderate">中度异常</string>
+    <string name="status_severe">严重异常</string>
+    
+    <!-- 提示信息 -->
+    <string name="message_scanning">正在扫描设备...</string>
+    <string name="message_connecting">正在连接设备...</string>
+    <string name="message_syncing">正在同步数据...</string>
+    <string name="message_sync_complete">数据同步完成</string>
+    <string name="message_no_device">未发现设备</string>
+    <string name="message_no_data">暂无数据</string>
+    <string name="message_egfr_low">您的eGFR值低于正常范围，建议咨询医生</string>
+    <string name="message_creatinine_high">您的血肌酐值高于正常范围，建议咨询医生</string>
+    <string name="message_permission_denied">权限被拒绝，请在设置中授予权限</string>
+    <string name="message_bluetooth_disabled">请开启蓝牙</string>
+    
+    <!-- 错误信息 -->
+    <string name="error_connect_failed">连接失败，请重试</string>
+    <string name="error_scan_failed">扫描失败，请重试</string>
+    <string name="error_data_parse_failed">数据解析失败</string>
+    <string name="error_database_operation_failed">数据库操作失败</string>
+    
+    <!-- 其他 -->
+    <string name="text_male">男</string>
+    <string name="text_female">女</string>
+    <string name="text_default_user">默认用户</string>
+    <string name="text_current">当前</string>
+    <string name="text_default">默认</string>
+    <string name="text_signal_strength">信号强度</string>
+    <string name="text_about">关于</string>
+    <string name="text_privacy_policy">隐私政策</string>
+    <string name="text_disclaimer">免责声明</string>
+    <string name="text_version">版本</string>
+    <string name="text_consult_doctor">咨询医生</string>
+    <string name="text_remind_later">稍后提醒</string>
+</resources>
